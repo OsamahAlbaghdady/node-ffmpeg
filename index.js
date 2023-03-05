@@ -5,7 +5,9 @@ const ffmpeg = require('fluent-ffmpeg');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Change the upload destination as needed
 
-//ffmpeg.setFfmpegPath('/var/www/html/ffmpeg/ffmpeg');
+// Set the codec to a GPU-accelerated codec
+const codec = 'h264_nvenc';
+
 app.post('/upload', upload.single('file'), (req, res) => {
     const inputPath = req.file.path;
     const outputPath = `./converted/sd${Math.random()}as.mp4`;
@@ -13,6 +15,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
     ffmpeg(inputPath)
         .output(outputPath)
         .videoBitrate(500)
+        .withVideoCodec(codec) // Use GPU-accelerated codec
         .on('end', () => {
             console.log('Video converted and saved successfully');
             res.send(outputPath);
@@ -24,7 +27,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
         })
         .run();
 });
-
 
 app.listen(3000, () => {
     console.log('mdsjifhb');
