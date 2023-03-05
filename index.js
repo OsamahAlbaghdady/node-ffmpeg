@@ -13,9 +13,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
     const outputPath = `./converted/sd${Math.random()}as.mp4`;
 
     ffmpeg(inputPath)
-    .videoCodec('h264_nvenc')
-    .audioCodec('aac')
-    .outputOptions(['-preset fast', '-movflags +faststart'])
     .videoBitrate(500)
     .videoFilters(`scale=${targetWidth}:${targetHeight}`)
         .output(outputPath)
@@ -24,6 +21,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
             res.send(outputPath);
         })
         .on('error', (error) => {
+            console.log(error);
             console.error(`Error converting video: ${error.message}`);
             res.status(500).send('Error converting video');
         })
