@@ -69,7 +69,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
             res.status(500).send('Error converting video');
         });
 
-    console.log('FFmpeg command:', command.spawnArgs().join(' '));
+    console.log('FFmpeg command:' );
 
     command.run();
 });
