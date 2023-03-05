@@ -1,4 +1,4 @@
-//process.env.FFMPEG_PATH = '/var/www/html/ffmpeg/ffmpeg';
+process.env.FFMPEG_PATH = '/var/www/html/ffmpeg/ffmpeg';
 const express = require('express');
 const app = express();
 const ffmpeg = require('fluent-ffmpeg');
