@@ -15,9 +15,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
         .inputOption([
             "-vsync 0",
             "-hwaccel cuvid",
-            "-hwaccel_device 0",
-            "-c:v h264_cuvid"
+            "-hwaccel_device 0"
         ])
+        .outputOptions("-c:v h264_cuvid")
         .videoCodec("h264_nvenc")
         .videoBitrate(500)
         .on('end', () => {
