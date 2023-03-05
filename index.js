@@ -11,8 +11,10 @@ app.post('/upload', upload.single('file'), (req, res) => {
     const outputPath = `./converted/sd${Math.random()}as.mp4`;
 
     ffmpeg(inputPath)
-    .videoBitrate(500)
         .output(outputPath)
+        .videoCodec('h264_nvenc')
+        .audioCodec('aac')
+        .videoBitrate(500)
         .on('end', () => {
             console.log('Video converted and saved successfully');
             res.send(outputPath);
