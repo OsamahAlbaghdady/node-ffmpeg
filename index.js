@@ -13,7 +13,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
         .output(outputPath)
         .videoBitrate(500)
         .outputOptions([
-            //'-c:v', 'h264_cuvid',
+            '-c:v', 'h264_nvenc',
           //  '-resize', '1280x720',
             '-c:a', 'copy'
           ])
