@@ -5,7 +5,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Change the upload destination as needed
 
-ffmpeg.setFfmpegPath('/var/www/html/ffmpeg/ffmpeg');
+//ffmpeg.setFfmpegPath('/var/www/html/ffmpeg/ffmpeg');
 app.post('/upload', upload.single('file'), (req, res) => {
     const inputPath = req.file.path;
     const outputPath = `./converted/sd${Math.random()}as.mp4`;
