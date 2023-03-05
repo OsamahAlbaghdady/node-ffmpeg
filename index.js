@@ -12,7 +12,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
     const outputPath = `./converted/sd${Math.random()}as.mp4`;
 
     ffmpeg(inputPath)
-    .videoCodec('h264_nvenc')
     .videoBitrate(500)
         .output(outputPath)
         .on('end', () => {
