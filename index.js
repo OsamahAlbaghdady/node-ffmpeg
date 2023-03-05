@@ -1,4 +1,4 @@
-process.env.FFMPEG_PATH = '/path/to/gpu-enabled/ffmpeg';
+process.env.FFMPEG_PATH = '/var/www/html/ffmpeg/ffmpeg';
 const express = require('express');
 const app = express();
 const { exec } = require('child_process');
