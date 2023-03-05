@@ -1,7 +1,6 @@
 process.env.FFMPEG_PATH = '/var/www/html/ffmpeg/ffmpeg';
 const express = require('express');
 const app = express();
-const exec = require('exec')
 const ffmpeg = require('fluent-ffmpeg');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Change the upload destination as needed
@@ -21,7 +20,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
             '-c:v', 'h264_cuvid',
         ])
         .videoBitrate(500)
-        .videoCodec('h264_nvenc')
         .on('end', () => {
             console.log('Video converted and saved successfully');
             res.send(outputPath);
