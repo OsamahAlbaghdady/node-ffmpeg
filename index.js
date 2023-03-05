@@ -14,14 +14,10 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
     ffmpeg(inputPath)
         .output(outputPath)
-        .addOptions([
-            '-hwaccel', 'cuvid',
-            '-c:v', 'h264_cuvid',
-            '-resize', '1280x720',
-            '-b:v', '1M',
-            '-hwaccel_device', '0' // Move this option before the input file
-        ])
         .videoBitrate(500)
+        .outputOptions([
+            '-c:v' , 'h264_nvenc'
+        ])
         .on('end', () => {
             console.log('Video converted and saved successfully');
             res.send(outputPath);
