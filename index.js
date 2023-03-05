@@ -12,8 +12,13 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
     ffmpeg(inputPath)
         .output(outputPath)
-        .videoCodec('h264_nvenc')
-        .audioCodec('aac')
+        .inputOption([
+            "-vsync 0",
+            "-hwaccel cuvid",
+            "-hwaccel_device 0",
+            "-c:v h264_cuvid"
+        ])
+        .videoCodec("h264_nvenc")
         .videoBitrate(500)
         .on('end', () => {
             console.log('Video converted and saved successfully');
