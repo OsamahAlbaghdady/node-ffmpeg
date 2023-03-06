@@ -22,10 +22,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
             console.log('Video converted and saved successfully');
             res.send(outputPath);
         })
-        .on('error', (error) => {
-            console.error(`Error converting video: ${error.message}`);
-            res.status(500).send('Error converting video');
-        })
+     
         .run();
 });
 
