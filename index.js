@@ -1,4 +1,4 @@
-process.env.FFMPEG_PATH = '/var/www/html/website/node-ffmpeg/ffmpeg-master-latest-linux64-gpl/bin';
+// process.env.FFMPEG_PATH = '/var/www/html/website/node-ffmpeg/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg';
 const express = require('express');
 const app = express();
 const ffmpeg = require('fluent-ffmpeg');
