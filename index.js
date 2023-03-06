@@ -1,4 +1,4 @@
-// process.env.FFMPEG_PATH = './ffmpeg-master-latest-linux64-gpl/bin/ffmpeg';
+process.env.FFMPEG_PATH = '/var/www/html/website/node-ffmpeg/ffmpeg-master-latest-linux64-gpl/bin';
 const express = require('express');
 const app = express();
 const ffmpeg = require('fluent-ffmpeg');
@@ -22,7 +22,10 @@ app.post('/upload', upload.single('file'), (req, res) => {
             console.log('Video converted and saved successfully');
             res.send(outputPath);
         })
-     
+        .on('error', (error) => {
+            console.error(`Error converting video: ${error.message}`);
+            res.status(500).send('Error converting video');
+        })
         .run();
 });
 
