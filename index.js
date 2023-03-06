@@ -16,7 +16,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
         .output(outputPath)
         .videoBitrate(500)
         .outputOptions([
-            '-c:v' , 'h264_nvenc'
+            '-c:v h264_nvenc'
         ])
         .on('end', () => {
             console.log('Video converted and saved successfully');
