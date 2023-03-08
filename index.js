@@ -72,6 +72,7 @@ app.post('/upload', upload.array('file[]'), async (req, res) => {
                 console.log('Thumbnail generated successfully');
             })
 
+            console.log("osamahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
 
             width = (await o).width
@@ -101,7 +102,6 @@ app.post('/upload', upload.array('file[]'), async (req, res) => {
                 }
             }
 
-            console.log("osamahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
 
             let l = new Promise((res, rej) => {
