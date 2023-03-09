@@ -10,17 +10,18 @@ const sharp = require('sharp')
 const fs = require('fs')
 const AWS = require('aws-sdk');
 const axios = require('axios')
-const js = require('circular-json')
+const bodyParser = require('body-parser')
 AWS.config.update({
     accessKeyId: "AKIARPZAGPO7TU2NAENX",
     secretAccessKey: "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",
 })
 
 const s3 = new AWS.S3();
-app.use(express.json());
+app.use(express.json())
 
-app.post('/upload', async (req, res, next) => {
-    var user = await axios.post('https://test.azu-app.com/api/auth-check', {}, {
+app.post('/upload', upload.array('file[]'), async (req, res, next) => {
+
+    var user = await axios.post('http://127.0.0.1:8000/api/auth-check', {}, {
         headers: {
             Authorization: req.headers.authorization,
             Accept: 'application/json'
@@ -31,12 +32,28 @@ app.post('/upload', async (req, res, next) => {
     if (user.data.code == 200) {
         return next();
     }
+
+    req.files.forEach(e => {
+        fs.unlink(e.path , ()=>{})
+    });
     return res.json({
         status: 303,
         msg: 'you need to login'
     })
 
-}, upload.array('file[]'), async (req, res) => {
+}, (req , res , next)=>{
+    if(req.body.description){
+        return next()
+    }
+    req.files.forEach(e => {
+        fs.unlink(e.path , ()=>{})
+    });
+    return res.json({
+        status: 350,
+        msg: 'description field is required'
+    })
+} ,   async (req, res) => {
+
     var data = [];
     await Promise.all(await req.files.map(async (file, index) => {
         // console.log(file);
@@ -196,7 +213,7 @@ app.post('/upload', async (req, res, next) => {
         ).then(async () => {
             dataToSend[dataToSend.length] = { description: req.body.description }
 
-            var hh = await axios.post('https://test.azu-app.com/api/home/posts/store', dataToSend, {
+            var hh = await axios.post('http://127.0.0.1:8000/api/home/posts/store', dataToSend, {
                 headers: {
                     Authorization: req.headers.authorization,
                     Accept: 'application/json'
