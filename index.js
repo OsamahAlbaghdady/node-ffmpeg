@@ -19,7 +19,24 @@ AWS.config.update({
 const s3 = new AWS.S3();
 app.use(express.json());
 
-app.post('/upload', upload.array('file[]'), async (req, res) => {
+app.post('/upload', async (req, res, next) => {
+    var user = await axios.post('https://test.azu-app.com/api/auth-check', {}, {
+        headers: {
+            Authorization: req.headers.authorization,
+            Accept: 'application/json'
+        }
+    })
+
+
+    if (user.data.code == 200) {
+        return next();
+    }
+    return res.json({
+        status: 303,
+        msg: 'you need to login'
+    })
+
+}, upload.array('file[]'), async (req, res) => {
     var data = [];
     await Promise.all(await req.files.map(async (file, index) => {
         // console.log(file);
@@ -178,15 +195,15 @@ app.post('/upload', upload.array('file[]'), async (req, res) => {
             })
         ).then(async () => {
             dataToSend[dataToSend.length] = { description: req.body.description }
-           
-            var hh = await axios.post('https://test.azu-app.com/api/home/posts/store' , dataToSend , {
-               headers : {
-                  accept : 'application/json'
-               }
+
+            var hh = await axios.post('https://test.azu-app.com/api/home/posts/store', dataToSend, {
+                headers: {
+                    Authorization: req.headers.authorization,
+                    Accept: 'application/json'
+                }
             })
-            // console.log(hh);
-           res.json(hh.data)
-           
+            res.json(hh.data)
+
         })
     })
 });
@@ -218,10 +235,17 @@ async function uploadToS3(file, path, type) {
     })
 
     d = await data
-    fs.unlink(file , ()=>{})
+    fs.unlink(file, () => { })
     return d
 
 }
+
+
+
+
+
+
+
 app.listen(3000, () => {
     console.log('mdsjifhb');
 })
