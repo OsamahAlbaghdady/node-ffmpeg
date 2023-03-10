@@ -21,10 +21,11 @@ app.use(express.json())
 
 app.post('/upload', upload.array('file[]'), async (req, res, next) => {
 
-    var user = await axios.post('http://127.0.0.1:8000/api/auth-check', {}, {
+    var user = await axios.post('https://web.azu-app.com/api/auth-check', {}, {
         headers: {
             Authorization: req.headers.authorization,
-            Accept: 'application/json'
+            Accept: 'application/json',
+            osamah: true
         }
     })
 
@@ -34,25 +35,25 @@ app.post('/upload', upload.array('file[]'), async (req, res, next) => {
     }
 
     req.files.forEach(e => {
-        fs.unlink(e.path , ()=>{})
+        fs.unlink(e.path, () => { })
     });
-    return res.json({
-        status: 303,
-        msg: 'you need to login'
-    })
+    return res.json(user.data)
 
-}, (req , res , next)=>{
-    if(req.body.description){
+}, (req, res, next) => {
+    if (req.body.description) {
         return next()
     }
     req.files.forEach(e => {
-        fs.unlink(e.path , ()=>{})
+        fs.unlink(e.path, () => { })
     });
     return res.json({
-        status: 350,
-        msg: 'description field is required'
+        code: 350,
+        status: false,
+        message: "حقل ال description مطلوب",
+        data: [],
+        errors: []
     })
-} ,   async (req, res) => {
+}, async (req, res) => {
 
     var data = [];
     await Promise.all(await req.files.map(async (file, index) => {
@@ -213,10 +214,11 @@ app.post('/upload', upload.array('file[]'), async (req, res, next) => {
         ).then(async () => {
             dataToSend[dataToSend.length] = { description: req.body.description }
 
-            var hh = await axios.post('http://127.0.0.1:8000/api/home/posts/store', dataToSend, {
+            var hh = await axios.post('https://web.azu-app.com/api/home/posts/store', dataToSend, {
                 headers: {
                     Authorization: req.headers.authorization,
-                    Accept: 'application/json'
+                    Accept: 'application/json',
+                    osamah: true
                 }
             })
             res.json(hh.data)
